@@ -1,0 +1,13 @@
+<h1>Buses</h1>
+
+<% @stops.each do |buses| %>
+  <ul>
+    <% buses.each do |bus| %>
+      <li>
+        <%= bus['lineName'] %>
+        to <%= bus['destinationName'] %>
+        arriving in <%= bus['timeToStation'] / 60 %> minutes
+      </li>
+    <% end %>
+  </ul>
+<% end %>
