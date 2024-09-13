@@ -1,11 +1,15 @@
 <h1>Buses</h1>
 
-<ul>
-  <% @buses.each do |bus| %>
-    <li>
-      <%= bus['lineName'] %>
-      to <%= bus['destinationName'] %>
-      arriving in <%= bus['timeToStation'] / 60 %> minutes
-    </li>
-  <% end %>
-</ul>
+<h2>by postcode</h2>
+<%= form_with url: '/postcode', method: :get do |form| %>
+  <%= form.label :postcode, 'Postcode' %>
+  <%= form.text_field :postcode %>
+  <%= form.submit 'Search' %>
+<% end %>
+
+<h2>by stop code</h2>
+<%= form_with url: '/stop', method: :get do |form| %>
+  <%= form.label :stop, 'Stop code' %>
+  <%= form.text_field :stop %>
+  <%= form.submit 'Search' %>
+<% end %>

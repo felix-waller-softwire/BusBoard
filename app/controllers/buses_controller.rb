@@ -3,6 +3,9 @@ require 'json'
 
 class BusesController < ApplicationController
   def index
+  end
+
+  def stop
     stop = params[:stop]
     uri = URI("https://api.tfl.gov.uk/StopPoint/#{stop}/Arrivals")
     res = Net::HTTP.get(uri)
