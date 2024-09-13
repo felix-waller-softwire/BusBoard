@@ -1,8 +1,8 @@
 <h1>Buses</h1>
 
-<% @stops.each do |buses| %>
+<% @arrivals.each do |stop| %>
   <ul>
-    <% buses.each do |bus| %>
+    <% stop.each do |bus| %>
       <li>
         <%= bus['lineName'] %>
         to <%= bus['destinationName'] %>
