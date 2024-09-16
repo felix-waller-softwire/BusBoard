@@ -1,7 +1,11 @@
 require 'net/http'
 require 'json'
+require 'erb'
 
 class BusesController < ApplicationController
+  TflApiHost = 'api.tfl.gov.uk'
+  PostcodeApiHost = 'api.postcodes.io'
+
   def index
   end
 
@@ -28,7 +32,9 @@ class BusesController < ApplicationController
 
   def fetch_arrivals(stops)
     stops.map do |stop|
-      uri = URI("https://api.tfl.gov.uk/StopPoint/#{stop}/Arrivals")
+      uri = URI::HTTPS.build(
+        host: TflApiHost,
+        path: "/StopPoint/#{stop}/Arrivals")
       res = Net::HTTP.get(uri)
       data = JSON.parse(res)
 
@@ -40,14 +46,19 @@ class BusesController < ApplicationController
   end
 
   def fetch_nearest_stops(lat, lon)
-    uri = URI("https://api.tfl.gov.uk/StopPoint/?lat=#{lat}&lon=#{lon}&stopTypes=NaptanPublicBusCoachTram")
+    uri = URI::HTTPS.build(
+      host: TflApiHost,
+      path: '/StopPoint',
+      query: URI.encode_www_form([['lat', lat], ['lon', lon], ['stopTypes', 'NaptanPublicBusCoachTram']]))
     res = Net::HTTP.get(uri)
     data = JSON.parse(res)
     data['stopPoints']&.map { |stop| stop['id'] }
   end
 
   def fetch_postcode_coordinates(postcode)
-    uri = URI("https://api.postcodes.io/postcodes/#{postcode.gsub(' ', '%20')}")
+    uri = URI::HTTPS.build(
+      host: PostcodeApiHost,
+      path: "/postcodes/#{ERB::Util.url_encode(postcode)}")
     res = Net::HTTP.get(uri)
     data = JSON.parse(res)
     [data['status'], data&.dig('result', 'latitude'), data&.dig('result', 'longitude')]
