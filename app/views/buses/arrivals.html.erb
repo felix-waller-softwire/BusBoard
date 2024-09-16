@@ -1,0 +1,29 @@
+<% content_for :head do %>
+  <meta http-equiv="refresh" content="30">
+<% end %>
+
+<h1>Buses</h1>
+
+<% @arrivals.each do |stop| %>
+  <% if stop.nil? %>
+    <p>Invalid stop code.</p>
+  <% elsif stop.empty? %>
+    <p>No upcoming arrivals.</p>
+  <% else %>
+    <%= stop[0]['stationName'] %> towards <%= stop[0]['towards'] %>
+    <ul>
+      <% stop.each do |bus| %>
+        <% time_to_station = bus['timeToStation'] / 60 %>
+        <li>
+          <%= bus['lineName'] %>
+          to <%= bus['destinationName'] %>
+          <% if time_to_station == 0 %>
+            due
+          <% else %>
+            in <%= time_to_station %> minutes
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
