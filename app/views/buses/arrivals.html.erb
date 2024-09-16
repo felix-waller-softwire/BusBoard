@@ -10,6 +10,7 @@
   <% elsif stop.empty? %>
     <p>No upcoming arrivals.</p>
   <% else %>
+    <%= stop[0]['stationName'] %> towards <%= stop[0]['towards'] %>
     <ul>
       <% stop.each do |bus| %>
         <% time_to_station = bus['timeToStation'] / 60 %>
