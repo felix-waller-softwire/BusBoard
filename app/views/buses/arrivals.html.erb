@@ -12,10 +12,15 @@
   <% else %>
     <ul>
       <% stop.each do |bus| %>
+        <% time_to_station = bus['timeToStation'] / 60 %>
         <li>
           <%= bus['lineName'] %>
           to <%= bus['destinationName'] %>
-          arriving in <%= bus['timeToStation'] / 60 %> minutes
+          <% if time_to_station == 0 %>
+            due
+          <% else %>
+            in <%= time_to_station %> minutes
+          <% end %>
         </li>
       <% end %>
     </ul>
