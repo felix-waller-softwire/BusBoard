@@ -1,9 +1,26 @@
+<% err = nil unless defined? err %>
+
+<% content_for :head do %>
+  <style>
+    .error { color: red; }
+  </style
+<% end %>
+
 <h1>Buses</h1>
 
 <h2>by postcode</h2>
+
 <%= form_with url: '/postcode', method: :get do |form| %>
-  <%= form.label :postcode, 'Postcode' %>
-  <%= form.text_field :postcode %>
+  <p class="error" id="postcode-error">
+    <%= 'Invalid postcode' if err == :invalid_postcode %>
+    <%= 'Postcode has no stops' if err == :postcode_has_no_stops %>
+  </p>
+
+  <%= form.label :postcode %>
+  <%= form.text_field :postcode, aria: {
+    describedby: 'postcode-error',
+    invalid: err == :invalid_postcode || err == :postcode_has_no_stops
+  }%>
   <%= form.submit 'Search' %>
 <% end %>
 
